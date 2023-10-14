@@ -16,5 +16,6 @@
     <orderEntry type="library" name="smtp" level="project" />
     <orderEntry type="library" name="javax.mail" level="project" />
     <orderEntry type="library" name="javax.activation" level="project" />
+    <orderEntry type="library" name="flatlaf-3.2" level="project" />
   </component>
 </module>

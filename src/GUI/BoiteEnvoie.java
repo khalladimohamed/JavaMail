@@ -64,6 +64,11 @@ public class BoiteEnvoie {
         });
     }
 
+    public JPanel getPanel() {
+        return panelBoiteEnvoie;
+    }
+
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Boite d'Envoi");

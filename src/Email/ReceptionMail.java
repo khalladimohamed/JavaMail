@@ -34,6 +34,7 @@ public class ReceptionMail extends Thread{
 
     public void run()
     {
+        int i = 0;
         while(!isInterrupted()) {
             try
             {
@@ -61,16 +62,21 @@ public class ReceptionMail extends Thread{
                 System.out.println("Nombre de nouveaux messages : " + f.getNewMessageCount());
                 System.out.println("Liste des messages : ");
 
-                // Réinitialisez la JTable
-                emailTableModel.setRowCount(0);
-
-                // Réinitialisez le JTree
                 DefaultTreeModel treeModel = (DefaultTreeModel) JtreeMTA.getModel();
                 DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
-                rootNode.removeAllChildren();
-                treeModel.reload();
 
-                for (int i=0; i<msg.length; i++)
+                /*DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Liste des MTAs");
+                DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
+                JtreeMTA.setModel(treeModel);*/
+
+                if(i == 0)
+                {
+                    // Réinitialisez le JTree
+                    rootNode.removeAllChildren();
+                    treeModel.reload();
+                }
+
+                for (; i < msg.length; i++)
                 {
                     System.out.println("Message n° " + i);
                     System.out.println("Expéditeur : " + msg[i].getFrom() [0]);
@@ -127,6 +133,8 @@ public class ReceptionMail extends Thread{
 
                             baos.flush();
                             String nf = p.getFileName();
+                            // Nettoyer le nom du fichier en supprimant les caractères non valides
+                            nf = nf.replaceAll("[^a-zA-Z0-9.-]", "_"); // Remplacer les caractères non valides par des underscores
                             FileOutputStream fos =new FileOutputStream(nf);
                             baos.writeTo(fos);
                             fos.close();
@@ -141,7 +149,7 @@ public class ReceptionMail extends Thread{
                 System.out.println("Fin des messages");
 
                 System.out.println("sleep 5 min");
-                Thread.sleep(300000); //300000 milisec = 5 min
+                Thread.sleep(10000); //300000 milisec = 5 min
             }
             catch (InterruptedException ex) {
                 Logger.getLogger(ReceptionMail.class.getName()).log(Level.SEVERE, null, ex);
