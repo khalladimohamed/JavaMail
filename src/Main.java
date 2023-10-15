@@ -11,7 +11,7 @@ public class Main {
             JFrame frame = new JFrame("Application de Messagerie");
             JTabbedPane tabbedPane = new JTabbedPane();
 
-            // Ajoutez vos onglets ici
+            // Ajouter les onglets
             BoiteEnvoie boiteEnvoie = new BoiteEnvoie();
             BoiteReception boiteReception = new BoiteReception();
 

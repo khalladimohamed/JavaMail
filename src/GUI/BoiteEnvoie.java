@@ -1,6 +1,7 @@
 package GUI;
 
 import Email.EnvoieMail;
+import com.formdev.flatlaf.FlatDarculaLaf;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -71,6 +72,7 @@ public class BoiteEnvoie {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+            FlatDarculaLaf.setup();
             JFrame frame = new JFrame("Boite d'Envoi");
             frame.setContentPane(new BoiteEnvoie().panelBoiteEnvoie);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

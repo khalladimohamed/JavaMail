@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import Email.ReceptionMail;
+import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class BoiteReception {
     private JTable tableEmailReception;
@@ -24,6 +25,7 @@ public class BoiteReception {
     }
 
     public static void main(String[] args) {
+        FlatDarculaLaf.setup();
         JFrame frame = new JFrame("Email Client");
         BoiteReception boiteReception = new BoiteReception();
         frame.setContentPane(boiteReception.panelBoiteReception);
