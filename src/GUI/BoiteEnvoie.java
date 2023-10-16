@@ -27,9 +27,9 @@ public class BoiteEnvoie {
 
 
     public BoiteEnvoie() {
-        // Initialisez le modèle de liste
+        // Initialiser le modèle de liste
         listModel = new DefaultListModel<>();
-        listPJ.setModel(listModel); // Associez le modèle à la JList
+        listPJ.setModel(listModel); // Associer le modèle à la JList
 
         buttonEnvoyer.addActionListener(new ActionListener() {
             @Override
@@ -46,7 +46,7 @@ public class BoiteEnvoie {
                 String nomPieceJointe = envoie.AjoutPiecesJointes();
 
                 if (nomPieceJointe != null) {
-                    // Ajoutez le nom de la pièce jointe au modèle de liste
+                    // Ajouter le nom de la pièce jointe au modèle de liste
                     listModel.addElement(nomPieceJointe);
                 }
             }
@@ -57,7 +57,7 @@ public class BoiteEnvoie {
                 int selectedIndex = listPJ.getSelectedIndex();
 
                 if (selectedIndex >= 0) {
-                    // Supprimez la pièce jointe sélectionnée du modèle de liste
+                    // Supprimer la pièce jointe sélectionnée du modèle de liste
                     listModel.remove(selectedIndex);
                     envoie.RetirePiecesJointes();
                 }
@@ -68,7 +68,6 @@ public class BoiteEnvoie {
     public JPanel getPanel() {
         return panelBoiteEnvoie;
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

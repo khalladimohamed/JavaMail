@@ -21,10 +21,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.swing.JFrame;
 
 public class EnvoieMail {
-
-    //static String host = "u2.tech.hepl.local";
     static String host = "smtp.gmail.com";
-
     Vector VPJ = new Vector();
 
     public String AjoutPiecesJointes()
@@ -54,13 +51,12 @@ public class EnvoieMail {
     {
         Properties prop = System.getProperties();
 
-        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.host", host);
         prop.put("mail.smtp.port", "587");
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.starttls.enable", "true");
 
         System.out.println("Création d'une session mail");
-        //Session sess = Session.getDefaultInstance(prop, null);
 
         Session sess = Session.getInstance(prop, new Authenticator() {
             @Override
@@ -73,7 +69,6 @@ public class EnvoieMail {
         {
             System.out.println("Création du message");
 
-            //String exp = "khalladimo@u2.tech.hepl.local";
             String exp = "mohamedkhalladihepl@gmail.com";
 
             MimeMessage msg = new MimeMessage(sess);

@@ -15,8 +15,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 public class ReceptionMail extends Thread{
-
-    //static String host = "u2.tech.hepl.be";
     static String host = "pop.gmail.com";
     private JTable tableEmailReception;
     private JScrollPane JScrollPaneBoiteReception;
@@ -30,7 +28,6 @@ public class ReceptionMail extends Thread{
         this.emailTableModel = emailTableModel;
         this.JtreeMTA = JtreeMTA;
     }
-
 
     public void run()
     {
@@ -65,13 +62,9 @@ public class ReceptionMail extends Thread{
                 DefaultTreeModel treeModel = (DefaultTreeModel) JtreeMTA.getModel();
                 DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
 
-                /*DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Liste des MTAs");
-                DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
-                JtreeMTA.setModel(treeModel);*/
-
                 if(i == 0)
                 {
-                    // Réinitialisez le JTree
+                    // Réinitialiser le JTree
                     rootNode.removeAllChildren();
                     treeModel.reload();
                 }
@@ -111,34 +104,39 @@ public class ReceptionMail extends Thread{
                     emailTableModel.addRow(rowData);
 
                     // Récupération du conteneur Multipart
-                    Multipart msgMP = (Multipart)msg[i].getContent();
-                    int np = msgMP.getCount();
-                    System.out.println("-- Nombre de composantes = " + np);
-
-                    for (int j=0; j<np; j++)
+                    // Attention: il faudrait d’abord tester si on a affaire effectivement à un multipart => un if avec un isMimeTYPE()
+                    if (msg[i].isMimeType("multipart/*"))
                     {
-                        System.out.println("--Composante n° " + j);
-                        Part p = msgMP.getBodyPart(j);
-                        String d = p.getDisposition();
-                        if (p.isMimeType("text/plain"))
-                            System.out.println("Texte : " + (String)p.getContent());
+                        Multipart msgMP = (Multipart)msg[i].getContent();
+                        int np = msgMP.getCount();
+                        System.out.println("-- Nombre de composantes = " + np);
 
-                        if (d!=null && d.equalsIgnoreCase(Part.ATTACHMENT))
+                        for (int j=0; j<np; j++)
                         {
-                            InputStream is = p.getInputStream();
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            int c;
-                            while ((c = is.read()) != -1)
-                                baos.write(c);
+                            System.out.println("--Composante n° " + j);
+                            Part p = msgMP.getBodyPart(j);
+                            String d = p.getDisposition();
+                            if (p.isMimeType("text/plain"))
+                                System.out.println("Texte : " + (String)p.getContent());
 
-                            baos.flush();
-                            String nf = p.getFileName();
-                            // Nettoyer le nom du fichier en supprimant les caractères non valides
-                            nf = nf.replaceAll("[^a-zA-Z0-9.-]", "_"); // Remplacer les caractères non valides par des underscores
-                            FileOutputStream fos =new FileOutputStream(nf);
-                            baos.writeTo(fos);
-                            fos.close();
-                            System.out.println("Pièce attachée " + nf + " récupérée");
+                            if (d!=null && d.equalsIgnoreCase(Part.ATTACHMENT))
+                            {
+                                InputStream is = p.getInputStream();
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                int c;
+                                while ((c = is.read()) != -1)
+                                    baos.write(c);
+
+                                baos.flush();
+                                String nf = p.getFileName();
+                                // Nettoyer le nom du fichier en supprimant les caractères non valides
+                                // Remplacer les caractères non valides par des underscores
+                                nf = nf.replaceAll("[^a-zA-Z0-9.-]", "_");
+                                FileOutputStream fos =new FileOutputStream(nf);
+                                baos.writeTo(fos);
+                                fos.close();
+                                System.out.println("Pièce attachée " + nf + " récupérée");
+                            }
                         }
                     }
                 }
@@ -149,7 +147,7 @@ public class ReceptionMail extends Thread{
                 System.out.println("Fin des messages");
 
                 System.out.println("sleep 5 min");
-                Thread.sleep(10000); //300000 milisec = 5 min
+                Thread.sleep(10000); //300000 milisec = 5 min - 10000 milisec = 10 sec
             }
             catch (InterruptedException ex) {
                 Logger.getLogger(ReceptionMail.class.getName()).log(Level.SEVERE, null, ex);
